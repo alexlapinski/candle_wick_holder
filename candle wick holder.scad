@@ -23,15 +23,7 @@ module slot(height, width, thickness) {
     }
 }
 
-
-//
-
-module candle_wick_holder(
-    width, 
-    length,
-    jar_radius,
-    jar_radius_2,
-    thickness) {
+module candle_wick_holder(width, length, jar_radius, jar_radius_2, thickness) {
    
    difference(){
         bar(width, length, thickness);
@@ -55,6 +47,8 @@ module candle_wick_holder(
 }
 
 
+
+///
 
 height = 3;
 length = 80;
