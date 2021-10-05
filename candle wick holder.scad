@@ -1,63 +1,75 @@
+use <threads.scad>  ;
+
 module bar(width, length, thickness){
     color("#F5F5F5")
     cube([width, length, thickness]);
 }
 
-module hole(height, radius=1.4) {
+module wick_hole(height, radius=1.4) {
     $fn = 360;
     color("#FF0000")
+    translate([-3, 0, 0])
     cylinder(height+0.2, radius, radius);
+
+    translate([0, 0, 0])
+        cylinder(height+0.2, 0.5, 0.5);
+
+    translate([-2.5, -0.5, 0])
+        cube([2.4, 1., height+0.2]);
 }
 
 
-module slot(height, width, thickness) {
-    h=height;
-    r1=width-thickness;
-    r2=r1;
+module jar_groove(width, thickness) {
     $fn=360;
  
-    color("blue")
-    difference(){
-        cylinder(h, r1, r2, center=true);
-        cylinder(h+1, r1-thickness, r2-thickness, center=true);
-    }
+    translate([0, 0, 0])
+        color("red")
+        metric_thread(
+            diameter=width, 
+            pitch=2.6, 
+            length=thickness,
+            thread_size=5.90
+       );
 }
 
-module candle_wick_holder(width, length, jar_radius, jar_radius_2, thickness) {
+module candle_wick_holder(width, length, jar_radius, thickness, hole_thickness) {
    
    difference(){
         bar(width, length, thickness);
         
-       translate([width/2, length/4, -0.1])
-            hole(thickness);
+       translate([width/2, (length/2) - 10, -0.1])
+            wick_hole(thickness);
        
         translate([width/2, length/2, -0.1])
-            hole(thickness);
+            wick_hole(thickness);
        
-        translate([width/2, 3*length/4, -0.1])
-            hole(thickness);
-       
-        translate([width/2, length/2, -0.1])
-            slot(thickness, jar_radius, thickness);
+        translate([width/2, (length/2) + 10, -0.1])
+            wick_hole(thickness);
        
        translate([width/2, length/2, -0.1])
-            slot(thickness, jar_radius_2, thickness);
+            jar_groove(jar_radius, 5);
    }
+   
+   
    
 }
 
 
+//translate([0, 0, -20])
+//jar_groove(jar_radius, 5);
+
 
 ///
 
-height = 3;
+height = 8;
 length = 80;
 width = 20;
-jar_radius = 20;
-jar_radius_2 = 35;
+jar_radius = 67.5;
 
 translate([
     -1*(width/2), 
     -1*(length/2), 
     -1*(height/2)])
-    candle_wick_holder(width, length, jar_radius, jar_radius_2, height);
+    candle_wick_holder(width, length,jar_radius, height);
+
+
